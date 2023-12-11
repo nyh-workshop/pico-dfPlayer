@@ -7,7 +7,7 @@ set(CMAKE_CXX_STANDARD 17)
 
 # Initialise pico_sdk from installed location
 # (note this can come from environment, CMake cache etc)
-set(PICO_SDK_PATH "E:/pico-sdk")
+# set(PICO_SDK_PATH "/YOUR_PICO_SDK_PATH/pico-sdk")
 
 set(PICO_BOARD pico CACHE STRING "Board type")
 
@@ -23,30 +23,25 @@ project(pico-dfPlayerMini C CXX ASM)
 # Initialise the Raspberry Pi Pico SDK
 pico_sdk_init()
 
+add_subdirectory(../pico_dfPlayer build)
+
 # Add executable. Default name is the project name, version 0.1
 
-add_executable(pico-dfPlayerMini main.cpp
-dfPlayer/dfPlayer.cpp )
+add_executable(pico-dfPlayerMini
+        main.cpp
+)
+
+# Add the standard library to the build
+target_link_libraries(pico-dfPlayerMini
+        pico_stdlib
+        pico_dfPlayer
+)
 
 pico_set_program_name(pico-dfPlayerMini "pico-dfPlayerMini")
 pico_set_program_version(pico-dfPlayerMini "0.1")
 
-pico_enable_stdio_uart(pico-dfPlayerMini 1)
-pico_enable_stdio_usb(pico-dfPlayerMini 0)
-
-# Add the standard library to the build
-target_link_libraries(pico-dfPlayerMini
-        pico_stdlib)
-
-# Add the standard include files to the build
-target_include_directories(pico-dfPlayerMini PRIVATE
-  ${CMAKE_CURRENT_LIST_DIR}
-  ${CMAKE_CURRENT_LIST_DIR}/.. # for our common lwipopts or any other standard includes, if required
-)
-
-# Add any user requested libraries
-target_link_libraries(pico-dfPlayerMini
-        )
 
 pico_add_extra_outputs(pico-dfPlayerMini)
 
+pico_enable_stdio_uart(pico-dfPlayerMini 1)
+pico_enable_stdio_usb(pico-dfPlayerMini 0)
