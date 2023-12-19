@@ -1,6 +1,6 @@
 #include "pico/stdlib.h"
 
-#include "dfPlayer/dfPlayer.h"
+#include "dfPlayer.h"
 
 class DfPlayerPico : public DfPlayer<DfPlayerPico>
 {
